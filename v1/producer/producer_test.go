@@ -2,7 +2,6 @@ package producer
 
 import (
 	"github.com/Shopify/sarama"
-	"github.com/yueja/cf-kafka/version"
 	"testing"
 	"time"
 )
@@ -14,7 +13,6 @@ var address = "192.168.0.124:9092"
 func TestInitSyncProducer(t *testing.T) {
 	type args struct {
 		addresses []string
-		version   *version.Version
 	}
 	tests := []struct {
 		name    string
@@ -25,7 +23,6 @@ func TestInitSyncProducer(t *testing.T) {
 			name: "test_01",
 			args: args{
 				addresses: []string{"192.168.0.124:9092"},
-				version:   &version.Version{Major: 4},
 			},
 			wantErr: true,
 		},
@@ -33,7 +30,6 @@ func TestInitSyncProducer(t *testing.T) {
 			name: "test_02",
 			args: args{
 				addresses: []string{"192.168.0.124:9092"},
-				version:   &version.Version{Major: 1},
 			},
 			wantErr: false,
 		},
@@ -41,7 +37,6 @@ func TestInitSyncProducer(t *testing.T) {
 			name: "test_03",
 			args: args{
 				addresses: []string{},
-				version:   &version.Version{Major: 1},
 			},
 			wantErr: true,
 		},
@@ -49,7 +44,6 @@ func TestInitSyncProducer(t *testing.T) {
 			name: "test_04",
 			args: args{
 				addresses: []string{},
-				version:   &version.Version{Major: 1},
 			},
 			wantErr: true,
 		},
@@ -64,7 +58,6 @@ func TestInitSyncProducer(t *testing.T) {
 				if err := InitSyncProducer(&Config{
 					Addresses:       tt.args.addresses,
 					MaxMessageBytes: 0,
-					Version:         tt.args.version,
 				}); (err != nil) != tt.wantErr {
 					t.Errorf("InitSyncProducer() error = %v, wantErr %v", err, tt.wantErr)
 

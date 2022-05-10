@@ -5,14 +5,12 @@ import (
 	pErr "github.com/pkg/errors"
 	config2 "github.com/yueja/cf-kafka/config"
 	"github.com/yueja/cf-kafka/errors"
-	"github.com/yueja/cf-kafka/version"
 )
 
 // Config 生产者配置
 type Config struct {
-	Addresses       []string         // kafka连接地址
-	MaxMessageBytes int              // 单条消息最大限制，单位byte，默认10M
-	Version         *version.Version // kafka版本
+	Addresses       []string // kafka连接地址
+	MaxMessageBytes int      // 单条消息最大限制，单位byte，默认10M
 	Partitioner     sarama.PartitionerConstructor
 }
 
@@ -43,12 +41,6 @@ func NewSyncProducer(c *Config) (p *SyncProducer, err error) {
 
 	// 获取默认配置
 	config := config2.DefaultProducerConfig()
-	if c.Version != nil {
-		config.Version, err = c.Version.Format()
-		if err != nil {
-			return
-		}
-	}
 	if c.MaxMessageBytes > 0 {
 		config.Producer.MaxMessageBytes = c.MaxMessageBytes
 	}
